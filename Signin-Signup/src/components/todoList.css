@@ -1,0 +1,14 @@
+.container{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    min-height: 80vh;
+    min-width: 100vw;
+}
+.button{
+    margin-top:15px;
+}
+.logout{
+    text-align: end;
+}
