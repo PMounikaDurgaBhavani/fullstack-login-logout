@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import "./todoList.css";
+import { updateTodo } from "../features/todoSlice";
 
-const EditList = ({ list, setList }) => {
+const EditList = () => {
+  const list = useSelector((state) => state.todo.list);
+  const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
   const index = parseInt(id);
   const [text, setText] = useState(list[index] || "");
 
   const updateTask = () => {
-    const updated = [...list];
-    updated[index] = text;
-    setList(updated);
+    if (text.trim() !== "") {
+      dispatch(updateTodo({ index, text }));
+    }
     navigate("/");
   };
   return (

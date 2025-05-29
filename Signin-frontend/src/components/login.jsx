@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {login} from "../features/authSlice";
 import axios from "axios";
 import "./login.css";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error,setError]=useState("");
+  const dispatch=useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
       const res = await axios.post("http://localhost:5000/api/login", form);
-      localStorage.setItem("token", res.data.token);
+      dispatch(login(res.data.token));
       navigate("/todoList");
     } catch (error) {
       console.log(error);

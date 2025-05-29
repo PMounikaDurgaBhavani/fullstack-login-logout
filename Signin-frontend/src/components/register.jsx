@@ -12,7 +12,7 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -22,12 +22,12 @@ const Register = () => {
       return setError("Password does not match");
     }
     try {
-      const res=await axios.post("http://localhost:5000/api/register", {
+      const res = await axios.post("http://localhost:5000/api/register", {
         username: form.username,
         email: form.email,
         password: form.password,
       });
-      localStorage.setItem('token',res.data.token)
+      localStorage.setItem("token", res.data.token);
       setSuccess("Sign up successfully!");
       navigate("/todoList");
       setForm({ username: "", email: "", password: "", confirmpassword: "" });
@@ -36,7 +36,11 @@ const Register = () => {
       if (error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
-        setError("Something went wrong.");
+        if (error.status == "401") {
+          setError("Email already Exists");
+        } else {
+          setError("Something went wrong.");
+        }
       }
     }
   };
