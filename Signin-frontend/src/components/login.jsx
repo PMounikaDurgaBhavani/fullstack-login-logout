@@ -1,30 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {login} from "../features/authSlice";
-import axios from "axios";
+import { login } from "../features/authSlice";
 import "./login.css";
+import axiosInstance from "../utilites/axiosInstance";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [error,setError]=useState("");
-  const dispatch=useDispatch();
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      const res = await axios.post("http://localhost:5000/api/login", form);
+      const res = await axiosInstance.post("/login", form);
       dispatch(login(res.data.token));
       navigate("/todoList");
     } catch (error) {
       console.log(error);
-      if(error.response && error.response.status=='401'){
+      if (error.response && error.response.status == "401") {
         setError("Invalid Credentials");
-      }else if(error.response && error.response.status=='404'){
+      } else if (error.response && error.response.status == "404") {
         setError("No user Found");
-      }
-      else{
+      } else {
         setError("Server Error");
       }
     }
@@ -51,7 +50,7 @@ const Login = () => {
           required
         />
         <button type="submit">Submit</button>
-        {error && <p style={{color:'red'}}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
       <p>You didn't have an account. Create new Account</p>
       <button onClick={() => navigate("/register")}>New Account</button>

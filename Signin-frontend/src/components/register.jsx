@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
+import axiosInstance from "../utilites/axiosInstance";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -25,7 +25,7 @@ const Register = () => {
       return setError("Password does not match");
     }
     try {
-      const res = await axios.post("http://localhost:5000/api/register", {
+      const res = await axiosInstance.post("/register", {
         username: form.username,
         email: form.email,
         password: form.password,

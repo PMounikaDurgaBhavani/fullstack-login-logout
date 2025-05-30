@@ -30,8 +30,8 @@ const TodoList = () => {
   const addtext = async () => {
     if (text.trim() !== "") {
       try {
-        const addTask = await axiosInstance.post("/tasks",{task:text});
-        dispatch(setList([...list,addTask.data]));
+        const addTask = await axiosInstance.post("/tasks", { task: text });
+        dispatch(setList([...list, addTask.data]));
         setText("");
       } catch (error) {
         console.log(error);
@@ -48,13 +48,17 @@ const TodoList = () => {
     }
   };
 
-  const unorderedlist = displayList?.filter((item)=>item && item.id).map((item) => item ? (
-    <li key={item.id}>
-      {item.task}
-      <button onClick={() => navigate(`/edit/${item.id}`)}>Edit</button>
-      <button onClick={() => deleteItem(item.id)}>Delete</button>
-    </li>
-  ):null);
+  const unorderedlist = displayList
+    ?.filter((item) => item && item.id)
+    .map((item) =>
+      item ? (
+        <li key={item.id}>
+          {item.task}
+          <button onClick={() => navigate(`/edit/${item.id}`)}>Edit</button>
+          <button onClick={() => deleteItem(item.id)}>Delete</button>
+        </li>
+      ) : null
+    );
 
   const handlelogout = () => {
     dispatch(logout());
