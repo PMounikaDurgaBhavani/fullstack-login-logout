@@ -1,9 +1,57 @@
 import React, { useState } from "react";
-import "./login.css";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
 import axiosInstance from "../utilites/axiosInstance";
+
+const ContainerR=styled.div`
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  min-width:100vw;
+  background-color:blue;
+`
+const HeadingR=styled.h1`
+  font-weight:bold;
+  margin:10px;
+  color:white;
+`
+
+const FormR=styled.form`
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const LabelR=styled.label`
+  font-weight:bold;
+  color:white;
+`
+
+const InputR=styled.input`
+  padding:10px;
+  border-radius:5px;
+  margin:10px;
+`
+
+const ButtonR=styled.button`
+  background-color:white;
+  color:black;
+  border: 2px solid white;
+  border-radius:5px;
+  padding:10px;
+  margin:10px;
+`
+
+const ErrorR=styled.p`
+  font-size:30px;
+  font-weight:bold;
+  color:red;
+`
+
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -13,13 +61,11 @@ const Register = () => {
     confirmpassword: "",
   });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
 
     if (form.password !== form.confirmpassword) {
       return setError("Password does not match");
@@ -31,7 +77,6 @@ const Register = () => {
         password: form.password,
       });
       dispatch(login(res.data.token));
-      setSuccess("Sign up successfully!");
       navigate("/todoList");
       setForm({ username: "", email: "", password: "", confirmpassword: "" });
     } catch (error) {
@@ -48,35 +93,35 @@ const Register = () => {
     }
   };
   return (
-    <div style={{ textAlign: "center", minWidth: "100vw" }}>
-      <h1>Register</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <label>Username</label>
-        <input
+    <ContainerR>
+      <HeadingR>Register</HeadingR>
+      <FormR onSubmit={handleSubmit}>
+        <LabelR>Username</LabelR>
+        <InputR
           type="text"
           value={form.username}
           placeholder="Enter Username"
           onChange={(e) => setForm({ ...form, username: e.target.value })}
           required
         />
-        <label>Email</label>
-        <input
+        <LabelR>Email</LabelR>
+        <InputR
           type="email"
           value={form.email}
           placeholder="Enter Email"
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           required
         />
-        <label>Password</label>
-        <input
+        <LabelR>Password</LabelR>
+        <InputR
           type="password"
           value={form.password}
           placeholder="Enter Password"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           required
         />
-        <label>Confirm Password</label>
-        <input
+        <LabelR>Confirm Password</LabelR>
+        <InputR
           type="password"
           value={form.confirmpassword}
           placeholder="Confirm Password"
@@ -85,11 +130,10 @@ const Register = () => {
           }
           required
         />
-        <button type="submit">Submit</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
-      </form>
-    </div>
+        <ButtonR type="submit">Submit</ButtonR>
+        {error && <Error style={{ color: "red" }}>{error}</Error>}
+      </FormR>
+    </ContainerR>
   );
 };
 

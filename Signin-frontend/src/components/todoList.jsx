@@ -1,10 +1,67 @@
 import React, { useEffect, useState } from "react";
-import "./todoList.css";
+import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { setList } from "../features/todoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/authSlice";
 import axiosInstance from "../utilites/axiosInstance";
+
+const ContainerT=styled.div`
+text-align: center;
+  min-width: 100vw;
+  background-color:blue;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+`
+const NavT=styled.div`
+  text-align:end;
+`
+
+const TodoContainerT=styled.div`
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+`
+const ButtonT=styled.button`
+  background-color:white;
+  color:black;
+  border: 2px solid white;
+  border-radius:5px;
+  padding:10px;
+  margin:20px;
+`
+
+const ListConT=styled.li`
+  list-style-type:none;
+  border: 2px solid white;
+  color:white;
+  border-radius:5px;
+  margin:10px;
+  width:65vw;
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
+  padding-left:10px;
+`
+const DivT=styled.div`
+  padding:1px;
+`
+const InputT=styled.input`
+  padding:15px;
+  border-radius:5px;
+  margin:10px;
+  border-width:0px;
+  width:50vw;
+  font-size:15px;
+`
+const HeadingT=styled.h1`
+  color:white;
+`
+
 
 const TodoList = () => {
   const list = useSelector((state) => state.todo.list);
@@ -52,11 +109,13 @@ const TodoList = () => {
     ?.filter((item) => item && item.id)
     .map((item) =>
       item ? (
-        <li key={item.id}>
+        <ListConT key={item.id}>
           {item.task}
-          <button onClick={() => navigate(`/edit/${item.id}`)}>Edit</button>
-          <button onClick={() => deleteItem(item.id)}>Delete</button>
-        </li>
+          <DivT>
+            <ButtonT onClick={() => navigate(`/edit/${item.id}`)}>Edit</ButtonT>
+            <ButtonT onClick={() => deleteItem(item.id)}>Delete</ButtonT>
+          </DivT>
+        </ListConT>
       ) : null
     );
 
@@ -66,13 +125,13 @@ const TodoList = () => {
   };
 
   return (
-    <div>
-      <div className="logout">
-        <button onClick={handlelogout}>Logout</button>
-      </div>
-      <div className="container">
-        <h1>Todo List</h1>
-        <input
+    <ContainerT>
+      <NavT>
+        <ButtonT onClick={handlelogout}>Logout</ButtonT>
+      </NavT>
+      <TodoContainerT>
+        <HeadingT>Todo List</HeadingT>
+        <InputT
           type="text"
           value={text}
           required
@@ -80,17 +139,17 @@ const TodoList = () => {
             setText(e.target.value);
           }}
         />
-        <button onClick={addtext} className="button">
+        <ButtonT onClick={addtext}>
           Add
-        </button>
+        </ButtonT>
         <ul>{unorderedlist}</ul>
         {list.length > 3 && (
-          <button onClick={() => setshowAll(!showAll)}>
+          <ButtonT onClick={() => setshowAll(!showAll)}>
             {showAll ? "Show Less" : "Show More"}
-          </button>
+          </ButtonT>
         )}
-      </div>
-    </div>
+      </TodoContainerT>
+    </ContainerT>
   );
 };
 

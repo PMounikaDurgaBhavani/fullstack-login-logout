@@ -2,8 +2,58 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
-import "./login.css";
+import styled from 'styled-components';
 import axiosInstance from "../utilites/axiosInstance";
+
+const ContainerL=styled.div`
+  text-align: center;
+  min-width: 100vw;
+  background-color:blue;
+  min-height:100vh;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const HeadingL=styled.h1`
+  color:white;
+`
+const FormL=styled.form`
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const LabelL=styled.label`
+  font-weight:bold;
+  color:white;
+`
+
+const InputL=styled.input`
+  padding:10px;
+  border-radius:5px;
+  margin:10px;
+`
+
+const ButtonL=styled.button`
+  background-color:white;
+  color:black;
+  border: 2px solid white;
+  border-radius:5px;
+  padding:10px;
+  margin:10px;
+`
+
+const ParaL=styled.p`
+  font-style: italic;
+  font-size:25px;
+  color:white;
+`
+const ErrorL=styled.p`
+  font-size:30px;
+  font-weight:bold;
+  color:red;
+`
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -30,31 +80,31 @@ const Login = () => {
   };
   const navigate = useNavigate();
   return (
-    <div style={{ textAlign: "center", minWidth: "100vw" }}>
-      <h1>Login</h1>
-      <form className="form" onSubmit={handleSubmit}>
-        <label>Email </label>
-        <input
+    <ContainerL>
+      <HeadingL>Login</HeadingL>
+      <FormL onSubmit={handleSubmit}>
+        <LabelL>Email </LabelL>
+        <InputL
           type="email"
           value={form.email}
           placeholder="Enter Email"
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           required
         />
-        <label>Password</label>
-        <input
+        <LabelL>Password</LabelL>
+        <InputL
           type="password"
           value={form.password}
           placeholder="Enter Password"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           required
         />
-        <button type="submit">Submit</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
-      <p>You didn't have an account. Create new Account</p>
-      <button onClick={() => navigate("/register")}>New Account</button>
-    </div>
+        <ButtonL type="submit">Submit</ButtonL>
+        {error && <Error style={{ color: "red" }}>{error}</Error>}
+      </FormL>
+      <ParaL>You didn't have an account. Create new Account</ParaL>
+      <ButtonL onClick={() => navigate("/register")}>New Account</ButtonL>
+    </ContainerL>
   );
 };
 
