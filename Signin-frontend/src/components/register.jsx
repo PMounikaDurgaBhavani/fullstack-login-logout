@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../features/authSlice";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -13,6 +15,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,7 +30,7 @@ const Register = () => {
         email: form.email,
         password: form.password,
       });
-      localStorage.setItem("token", res.data.token);
+      dispatch(login(res.data.token));
       setSuccess("Sign up successfully!");
       navigate("/todoList");
       setForm({ username: "", email: "", password: "", confirmpassword: "" });

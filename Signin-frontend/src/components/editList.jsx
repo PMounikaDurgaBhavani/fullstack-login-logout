@@ -2,21 +2,34 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./todoList.css";
-import { updateTodo } from "../features/todoSlice";
+import axiosInstance from "../utilites/axiosInstance";
+import { setList } from "../features/todoSlice";
 
 const EditList = () => {
   const list = useSelector((state) => state.todo.list);
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
-  const index = parseInt(id);
-  const [text, setText] = useState(list[index] || "");
+  const taskItem=list.find((task)=>task.id===parseInt(id));
+  console.log(taskItem);
+  const [text, setText] = useState(taskItem?.task || "");
 
-  const updateTask = () => {
-    if (text.trim() !== "") {
-      dispatch(updateTodo({ index, text }));
-    }
-    navigate("/");
+  if(!taskItem){
+    return <p>Task not found</p>
+  }
+
+  const updateTask = async() => {
+      if (text.trim() === "") return;
+      try {
+        const res=await axiosInstance.put(`/tasks/${taskItem.id}`,{
+          task:text,
+        });
+        const updatedList=list.map((item)=>item.id===taskItem.id ? res.data : item);
+        dispatch(setList(updatedList));
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
   };
   return (
     <div className="container">
